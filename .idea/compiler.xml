@@ -13,7 +13,7 @@
         <module name="catalog-service" />
         <module name="reservation-service" />
       </profile>
-      <profile name="Annotation profile for discovery-service" enabled="true">
+      <profile name="Annotation profile for library-server" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />

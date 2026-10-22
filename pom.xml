@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-parent</artifactId><version>4.1.1</version><relativePath/></parent>
+  <groupId>customer</groupId><artifactId>library-server</artifactId><version>0.0.1-SNAPSHOT</version><packaging>pom</packaging>
+  <modules>
+    <module>discovery-service</module>
+    <module>api-gateway</module>
+    <module>identity-service</module>
+    <module>catalog-service</module>
+    <module>circulation-service</module>
+    <module>reservation-service</module>
+    <module>notification-service</module>
+  </modules>
+  <properties><java.version>21</java.version><spring-cloud.version>2025.1.2</spring-cloud.version><sqlite.version>3.47.1.0</sqlite.version></properties>
+  <dependencyManagement><dependencies>
+    <dependency><groupId>org.springframework.cloud</groupId><artifactId>spring-cloud-dependencies</artifactId><version>${spring-cloud.version}</version><type>pom</type><scope>import</scope></dependency>
+    <dependency><groupId>org.xerial</groupId><artifactId>sqlite-jdbc</artifactId><version>${sqlite.version}</version></dependency>
+  </dependencies></dependencyManagement>
+  <dependencies>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-actuator</artifactId></dependency>
+    <dependency><groupId>io.micrometer</groupId><artifactId>micrometer-registry-prometheus</artifactId></dependency>
+  </dependencies>
+  <build><pluginManagement><plugins>
+    <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin>
+    <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><configuration><systemPropertyVariables><eureka.client.register-with-eureka>false</eureka.client.register-with-eureka><eureka.client.fetch-registry>false</eureka.client.fetch-registry><spring.cloud.service-registry.auto-registration.enabled>false</spring.cloud.service-registry.auto-registration.enabled><spring.datasource.url>jdbc:sqlite::memory:</spring.datasource.url></systemPropertyVariables></configuration></plugin>
+  </plugins></pluginManagement></build>
+</project>

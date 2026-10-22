@@ -1,0 +1,11 @@
+**/target/
+.idea/
+*.iml
+out/
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/*.db-journal
+.env
+.infrastructure-check/
+.infrastructure-*.log

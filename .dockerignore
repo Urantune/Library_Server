@@ -1,0 +1,12 @@
+**/target
+.git
+.idea
+out
+**/*.db*
+.infrastructure-check
+.infrastructure-*.log
+docs/
+scripts/
+README.md
+compose.yaml
+**/data/

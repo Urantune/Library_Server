@@ -1,1 +1,2 @@
-services: { }
+# Use the server root compose.yaml.
+services: {}
