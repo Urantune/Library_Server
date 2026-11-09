@@ -1,4 +1,4 @@
-package customer.identityservice.user;
+package customer.identityservice.user.entity;
 
 import java.time.Instant;
 

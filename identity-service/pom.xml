@@ -88,6 +88,13 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
+
+        <!-- Spring Boot 4 tách Flyway autoconfiguration ra module riêng:
+             chỉ có flyway-core thì migration không được chạy. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-flyway</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

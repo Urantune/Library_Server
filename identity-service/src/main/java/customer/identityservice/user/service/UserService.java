@@ -1,4 +1,4 @@
-package customer.identityservice.user;
+package customer.identityservice.user.service;
 
 import java.util.Locale;
 import java.util.Set;
@@ -10,14 +10,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import customer.identityservice.audit.AuditRepository;
+import customer.identityservice.user.dto.UserDto;
+import customer.identityservice.user.entity.UserRow;
+import customer.identityservice.user.repository.UserRepository;
+
 @Service
 public class UserService {
     private static final Set<String> ROLES = Set.of("MEMBER", "LIBRARIAN", "ADMIN");
     private static final Pattern EMAIL = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
     private final UserRepository users;
+    private final AuditRepository audits;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserService(UserRepository users) { this.users = users; }
+    public UserService(UserRepository users, AuditRepository audits) {
+        this.users = users;
+        this.audits = audits;
+    }
 
     public UserDto.UserList search(String query, int page, int size) {
         if (page < 0 || size < 1 || size > 100) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "page/size không hợp lệ");
@@ -39,7 +48,7 @@ public class UserService {
     public UserDto create(UserDto.Input input, String actor, String traceId) {
         validate(input, true, null);
         UserRow created = users.create(normalize(input), passwordEncoder.encode(input.password()));
-        users.audit(actor, "USER_CREATED", created.id(), "SUCCESS", traceId);
+        audits.record(actor, "USER_CREATED", created.id(), "SUCCESS", traceId);
         return UserDto.from(created);
     }
 
@@ -48,7 +57,7 @@ public class UserService {
         requireUser(id);
         validate(input, false, id);
         UserRow updated = users.update(id, normalize(input));
-        users.audit(actor, "USER_UPDATED", id, "SUCCESS", traceId);
+        audits.record(actor, "USER_UPDATED", id, "SUCCESS", traceId);
         return UserDto.from(updated);
     }
 
@@ -57,13 +66,13 @@ public class UserService {
         requireUser(id);
         if (!Set.of("ACTIVE", "LOCKED", "INACTIVE").contains(status)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trạng thái không hợp lệ");
         users.updateStatus(id, status);
-        users.audit(actor, "USER_STATUS_" + status, id, "SUCCESS", traceId);
+        audits.record(actor, "USER_STATUS_" + status, id, "SUCCESS", traceId);
     }
 
     @Transactional
     public void delete(String id, String actor, String traceId) {
         requireUser(id);
-        users.audit(actor, "USER_DELETED", id, "SUCCESS", traceId);
+        audits.record(actor, "USER_DELETED", id, "SUCCESS", traceId);
         users.delete(id);
     }
 

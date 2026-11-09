@@ -1,14 +1,17 @@
-package customer.identityservice.user;
+package customer.identityservice.user.dto;
 
 import java.time.Instant;
 import java.util.List;
 
+import customer.identityservice.user.entity.UserRow;
+
 public record UserDto(String id, String username, String email, String fullName,
-                      String phone, String role, String status,
+                      String phone, String role, List<String> roles, String status,
                       Instant createdAt, Instant updatedAt) {
     public static UserDto from(UserRow row) {
+        List<String> roles = List.of(row.role() == null ? "MEMBER" : row.role());
         return new UserDto(row.id(), row.username(), row.email(), row.fullName(),
-                row.phone(), row.role(), row.status(), row.createdAt(), row.updatedAt());
+                row.phone(), row.role(), roles, row.status(), row.createdAt(), row.updatedAt());
     }
 
     public record Input(String username, String email, String fullName,

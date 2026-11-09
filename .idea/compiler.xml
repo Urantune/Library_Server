@@ -6,12 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
-        <module name="identity-service" />
         <module name="circulation-service" />
-        <module name="notification-service" />
         <module name="catalog-service" />
         <module name="reservation-service" />
+        <module name="api-gateway" />
+        <module name="identity-service" />
+        <module name="notification-service" />
       </profile>
       <profile name="Annotation profile for discovery-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
